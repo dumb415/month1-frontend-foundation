@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 6 — JS + DOM Playground</title>
+  <style>
+    /* Minimal CSS — today is about JS, not styling */
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
+    .menu { display: none; padding: 1rem; background: #f0f0f0; border-radius: 8px; margin-top: 0.5rem; }
+    .menu.open { display: block; }                /* the class we'll toggle from JS */
+    .note { padding: 0.75rem; margin: 0.5rem 0; background: #fff8dc; border-left: 3px solid #daa520; }
+    button, input { padding: 0.5rem; font-size: 1rem; }
+    input { width: 100%; box-sizing: border-box; }
+  </style>
+</head>
+<body>
+
+  <h1 id="page-title">Day 6 Playground</h1>
+
+  <!-- SECTION 1: toggle a class on click -->
+  <button id="menu-btn">Toggle Menu</button>
+  <div id="menu" class="menu">
+    <p>I'm a hidden menu — JS toggles my .open class.</p>
+  </div>
+
+  <!-- SECTION 2: live input echo -->
+  <h2>Live echo</h2>
+  <input id="echo-input" placeholder="Type something...">
+  <p>You typed: <span id="echo-output"></span></p>
+
+  <!-- SECTION 3: form submit + dynamic list -->
+  <h2>Notes</h2>
+  <form id="note-form">
+    <input id="note-input" placeholder="Write a note and press Enter">
+  </form>
+  <div id="note-list"></div>
+
+  <script>
+    // ============================================================
+    // 1. VARIABLES — let vs const vs var
+    // ============================================================
+
+    const PAGE_NAME = "Day 6 Playground"; // const  ← like `const char* PAGE_NAME` in C. Cannot be rebound.
+    let   noteCount = 0;                  // let    ← like `int noteCount = 0;`. Block-scoped, reassignable.
+    // var oldStyle = "avoid me";         // var    ← function-scoped legacy. Treat it like `goto` — works, don't use it.
+
+    // Rule of thumb: `const` by default. Switch to `let` only when you need to reassign.
+
+    // ============================================================
+    // 2. SELECTING DOM ELEMENTS
+    //    The DOM is a tree. These calls return pointers (references) to nodes in it.
+    // ============================================================
+
+    const menuBtn = document.querySelector("#menu-btn");
+    //const menuBtn    = document.getElementById("menu-btn");    // by id → 1 element or null
+    const menu       = document.getElementById("menu");
+    const echoInput  = document.querySelector("#echo-input");  // any CSS selector — # for id, . for class, tag for tag
+    const echoOutput = document.querySelector("#echo-output");
+    const noteForm   = document.querySelector("#note-form");
+    const noteInput  = document.querySelector("#note-input");
+    const noteList   = document.querySelector("#note-list");
+
+    // querySelectorAll returns a NodeList — think `Node* arr[]` in C. Handy for "grab ALL matching":
+    // const allButtons = document.querySelectorAll("button"); // every <button> on the page
+
+    // Best practice: cache selectors once at the top. Don't call getElementById inside a loop or hot handler.
+
+    // ============================================================
+    // 3. EVENT LISTENERS — "when X happens on this node, run this function"
+    // ============================================================
+
+    // --- CLICK: toggle a CSS class ---
+    menuBtn.addEventListener("click", () => {
+      // `() => { ... }` is an arrow function — JS's lambda. Same idea as C++11 `[](){ ... }`.
+      menu.classList.toggle("open"); // classList.toggle → add the class if missing, remove if present
+    });
+
+    // --- INPUT: fires on every keystroke ---
+    echoInput.addEventListener("input", (event) => {
+      // `event` is the event object; event.target is the element that fired it.
+      // textContent → safe plain-text write. Think fputs — no parsing.
+      // innerHTML   → parses the string as HTML. Think fprintf with a format string — DANGEROUS with user input (XSS).
+      echoOutput.textContent = event.target.value; // ALWAYS textContent for user-supplied strings.
+    });
+
+    // --- SUBMIT: form handling ---
+    noteForm.addEventListener("submit", (event) => {
+      event.preventDefault(); // stop the browser's default (full page reload). Non-negotiable in single-page apps.
+
+      const text = noteInput.value.trim(); // .trim() strips leading/trailing whitespace
+      if (!text) return;                   // guard clause — bail on empty input (best practice: fail fast, no nested ifs)
+
+      addNote(text);        // delegate DOM work to a named function — keeps the handler readable
+      noteInput.value = ""; // reset the input for the next entry
+    });
+
+    // ============================================================
+    // 4. FUNCTIONS — named vs arrow, and template literals
+    // ============================================================
+
+    // Named function declaration — hoisted (callable before its definition in the file).
+    function addNote(text) {
+      noteCount++;
+
+      // Template literal: backticks + ${expr}. Compare with:
+      //   sprintf(buf, "Note #%d: %s", n, text);
+      const label = `Note #${noteCount}: ${text}`;
+
+      // Create a new DOM node — like malloc'ing a struct. Not on the page yet.
+      const noteEl = document.createElement("div");
+      noteEl.className   = "note";  // set the class attribute so our CSS applies
+      noteEl.textContent = label;   // safe write — no HTML injection possible
+
+      noteList.appendChild(noteEl); // attach to the tree → NOW the browser paints it
+    }
+
+    // Arrow function stored in a const — good for short utilities.
+    // Not hoisted — must be defined before use (like assigning a function pointer in C).
+    const greet = (name) => `Hello, ${name}!`; // single-expression body → implicit return, no braces needed
+
+    // console.log → prints to the DevTools console. Your printf for the browser.
+    console.log(greet(PAGE_NAME));
+  </script>
+
+</body>
+</html>

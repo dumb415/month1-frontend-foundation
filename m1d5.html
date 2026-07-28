@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- ⚠️ THE MOST IMPORTANT LINE TODAY: -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ↑ width=device-width → tells mobile browsers: "render at YOUR real width,
+         don't pretend to be a 980px desktop and shrink everything."
+         initial-scale=1.0 → zoom level starts at 100%.
+         Without this line, media queries basically don't work on phones —
+         like compiling for the wrong target architecture. -->
+
+    <title>m1d5 — Responsive Cards</title>
+    <style>
+        /* ============================================
+           BASE STYLES = MOBILE STYLES (mobile-first)
+           No @media wrapper → applies at ALL widths,
+           like code outside any #ifdef
+           ============================================ */
+
+        * {
+            box-sizing: border-box;   /* from m1d2 — width includes padding+border */
+            margin: 0;
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 1rem;            /* rem = multiple of root font size (16px default).
+                                         1rem = 16px. Like using a #define BASE_UNIT
+                                         instead of hardcoding magic numbers */
+        }
+
+        .card-row {
+            display: flex;            /* from m1d3 */
+            flex-direction: column;   /* ← MOBILE DEFAULT: stack vertically.
+                                         Small screen = one column, no condition needed */
+            gap: 1rem;
+        }
+
+        .card {
+            background: #f4f4f5;
+            border: 1px solid #d4d4d8;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        /* ============================================
+           TABLET: viewport ≥ 768px
+           ============================================ */
+        @media (min-width: 768px) {
+            /* ↑ read as: if (viewport_width >= 768) { apply these rules }
+                 min-width = "this width AND UP" — that's why it's mobile-FIRST:
+                 conditions only ADD as screens grow */
+
+            .card-row {
+                flex-direction: row;  /* ← override: now cards sit side by side.
+                                         Only this ONE property is overridden;
+                                         gap, display:flex etc. are inherited
+                                         from the base block above */
+                flex-wrap: wrap;      /* from m1d3 — allow wrapping if tight */
+            }
+
+            .card {
+                flex: 1 1 300px;      /* shorthand: flex-grow flex-shrink flex-basis
+                                         "start at ~300px, grow/shrink to fill row" */
+            }
+        }
+
+        /* ============================================
+           DESKTOP: viewport ≥ 1024px
+           ============================================ */
+        @media (min-width: 1024px) {
+            body {
+                max-width: 1100px;    /* stop content stretching infinitely wide —
+                                         like clamping a value: min(width, 1100) */
+                margin: 0 auto;       /* auto left/right margins → center the block */
+            }
+
+            .card {
+                padding: 2rem;        /* more breathing room on big screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Responsive Card Row</h1>
+    <div class="card-row">
+        <article class="card"><h2>Card 1</h2><p>Stacks on mobile, rows on desktop.</p></article>
+        <article class="card"><h2>Card 2</h2><p>Resize the window and watch me move.</p></article>
+        <article class="card"><h2>Card 3</h2><p>One codebase, every screen.</p></article>
+    </div>
+</body>
+</html>

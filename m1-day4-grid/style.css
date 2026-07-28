@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box; /* from Day 2 — padding/border counted INSIDE width, not added on top */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.layout {
+  display: grid; /* turns .layout into a 2D grid container */
+
+  grid-template-columns: 200px 1fr; /* col 1 = fixed 200px sidebar, col 2 = flexible remaining space */
+  grid-template-rows: 80px 1fr 60px; /* row 1 = header height, row 2 = flexible content, row 3 = footer height */
+
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer"; /* the ASCII-art map — each row here MUST have same word count as columns declared above (2) */
+
+  min-height: 100vh; /* grid fills at least the full screen height, so footer doesn't float in the middle */
+  gap: 8px; /* small gap between grid cells so you can visually see the boundaries */
+}
+
+header {
+  grid-area: header; /* "I go wherever 'header' is written in grid-template-areas" */
+  background: #4f46e5;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+nav {
+  grid-area: sidebar; /* NOTE: the html tag is <nav>, but the area name is "sidebar" — they don't have to match */
+  background: #1e293b;
+  color: white;
+  padding: 20px;
+}
+
+main {
+  grid-area: main;
+  background: #f1f5f9;
+  padding: 20px;
+}
+
+footer {
+  grid-area: footer;
+  background: #334155;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
