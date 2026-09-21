@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Posts from './pages/Posts'
 import PostDetail from './pages/PostDetail'
+import GithubProfile from './GithubProfile'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/posts" element={<Posts />} />
         <Route path="/posts/:id" element={<PostDetail />} /> {/* ← :id is a placeholder, captured by useParams */}
+        <Route path="/github" element={<GithubProfile />} />
         <Route path="*" element={<h1>404 — Not Found</h1>} /> {/* ← catches any unmatched URL */}
       </Routes>
     </>
