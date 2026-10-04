@@ -1,111 +1,24 @@
-"use client"; // ← Next.js: marks this file as a Client Component. Required for useState/onClick.
-              //   Without it, Next treats the file as a Server Component (runs only on the server).
+import { Users, DollarSign, Activity, TrendingUp } from "lucide-react";
+import StatCard from "@/components/StatCard";
 
-import { useState } from "react"; // ← same useState you know from Day 10
+// Mock data lives outside the component: not rebuilt on every render, easy to swap for an API later
+const STATS = [
+  { title: "Total Users", value: "12,480", change: "+12% from last month", icon: Users },
+  { title: "Revenue", value: "$48,200", change: "+8% from last month", icon: DollarSign },
+  { title: "Active", value: "1,903", change: "+3% from last week", icon: Activity },
+  { title: "Growth", value: "14.2%", change: "+1.1% from last month", icon: TrendingUp },
+];
 
-// ← "@/" is the import alias to project root (set up by create-next-app). Like an -I include path in g++.
-import { Button } from "@/components/ui/button"; // ← named import of YOUR copied source file
-import { Input } from "@/components/ui/input";
-import {
-  Card,            // ← shadcn splits one Card into many small parts (composition, like Day 9)
-  CardHeader,      // ← top section wrapper
-  CardTitle,       // ← heading text
-  CardDescription, // ← muted subtitle text
-  CardContent,     // ← main body
-  CardFooter,      // ← bottom section
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge"; // ← small pill label
-
-export default function TodoPage() {
-  // Best practice: state named as noun + setNoun
-  const [tasks, setTasks] = useState([]);      // ← array of { id, text, done }
-  const [inputValue, setInputValue] = useState(""); // ← controlled input value (Day 12)
-
-  const addTask = () => {
-    const trimmed = inputValue.trim(); // ← .trim() removes leading/trailing spaces
-    if (trimmed === "") return;        // ← guard clause: ignore empty input (early return, like in C++)
-
-    // Immutable update: NEW array via spread, never tasks.push() (Day 10 lesson)
-    setTasks([...tasks, { id: Date.now(), text: trimmed, done: false }]);
-    setInputValue(""); // ← clear the input after adding
-  };
-
-  const toggleTask = (id) => {
-    setTasks(
-      tasks.map((t) =>
-        t.id === id ? { ...t, done: !t.done } : t // ← copy object, flip ONE field
-      )
-    );
-  };
-
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((t) => t.id !== id)); // ← keep everything EXCEPT this id
-  };
-
-  const doneCount = tasks.filter((t) => t.done).length; // ← derived value: no extra state needed
-
+export default function DashboardPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center p-6">
-      {/* ← Tailwind from Days 15-16: flex + centering */}
-      <Card className="w-full max-w-md">
-        {/* ← className is MERGED with the Card's built-in classes (via cn() in lib/utils.js) */}
-        <CardHeader>
-          <CardTitle>My Tasks</CardTitle>
-          <CardDescription>Built with shadcn/ui</CardDescription>
-        </CardHeader>
-
-        <CardContent className="space-y-4">
-          {/* ← space-y-4: vertical gap between direct children */}
-          <div className="flex gap-2">
-            <Input
-              value={inputValue}                                // ← controlled input
-              onChange={(e) => setInputValue(e.target.value)}   // ← update state on each keystroke
-              onKeyDown={(e) => e.key === "Enter" && addTask()} // ← Enter key submits (&& short-circuit)
-              placeholder="Add a task..."
-            />
-            <Button onClick={addTask}>Add</Button>
-            {/* ← default variant = primary style */}
-          </div>
-
-          <ul className="space-y-2">
-            {tasks.map((task) => (
-              <li key={task.id} className="flex items-center justify-between gap-2">
-                {/* ← key={task.id}: stable id, NOT index (Day 12 lesson) */}
-                <span className={task.done ? "line-through text-muted-foreground" : ""}>
-                  {/* ← text-muted-foreground: shadcn theme color token (adapts to dark mode) */}
-                  {task.text}
-                </span>
-                <div className="flex gap-1">
-                  <Button
-                    size="sm"                                    // ← size variant: small
-                    variant={task.done ? "secondary" : "outline"} // ← variant prop, like your Day 16 Button
-                    onClick={() => toggleTask(task.id)}           // ← arrow wrapper so it runs on click, not on render
-                  >
-                    {task.done ? "Undo" : "Done"}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive" // ← red variant
-                    onClick={() => deleteTask(task.id)}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </li>
-            ))}
-          </ul>
-
-          {tasks.length === 0 && (
-            <p className="text-sm text-muted-foreground">No tasks yet.</p> // ← empty state (Day 14 habit)
-          )}
-        </CardContent>
-
-        <CardFooter className="flex gap-2">
-          <Badge variant="secondary">{tasks.length} total</Badge>
-          {/* ← Badge = pill label */}
-          <Badge>{doneCount} done</Badge>
-        </CardFooter>
-      </Card>
-    </main>
+    <div className="space-y-6"> {/* space-y-6 = vertical gap between direct children */}
+      <h1 className="text-2xl font-bold">Dashboard</h1>
+      {/* mobile-first: 1 col -> 2 cols (sm) -> 4 cols (lg) */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {STATS.map((stat) => (
+          <StatCard key={stat.title} {...stat} /> // {...stat} = spread: passes every field as a prop
+        ))}
+      </div>
+    </div>
   );
 }
