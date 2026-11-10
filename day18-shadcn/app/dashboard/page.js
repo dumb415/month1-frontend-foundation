@@ -3,6 +3,7 @@ import StatCard from "@/components/StatCard";
 import WeeklyChart from "@/components/WeeklyChart";
 import UsersTable from "@/components/UsersTable";
 import { weeklyData, recentUsers } from "@/lib/mock-data";
+import Ghost from "@/components/DoesNotExist";   // file doesn't exist, so the build must fail
 
 const STATS = [
   { title: "Total Users", value: "12,480", change: "+12% from last month", icon: Users },
