@@ -1,7 +1,7 @@
 // NO "use client" at top  ← in the App Router, every component is a Server Component by default
-import PostList from "@/components/PostList"; // ← "@/" alias = project root (set up by create-next-app in jsconfig.json)
+import { API_BASE_URL } from "@/lib/config"; // ← named import from the file you created; "@/" = project root // ← "@/" alias = project root (set up by create-next-app in jsconfig.json)
 
-const POSTS_URL = "https://jsonplaceholder.typicode.com/posts?_limit=12"; // ← constant: no magic strings inside functions
+const POSTS_URL = `${API_BASE_URL}/posts?_limit=12`; // ← template literal: the env value is spliced in, so the host is no longer hardcoded// ← constant: no magic strings inside functions
 
 async function getPosts() { // ← async function: allowed because this code runs on the server
   console.log("SERVER: fetching posts"); // ← shows in your TERMINAL, not the browser console (proves where it runs)
