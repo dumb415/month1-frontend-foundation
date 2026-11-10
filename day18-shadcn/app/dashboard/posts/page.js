@@ -1,5 +1,6 @@
 // NO "use client" at top  ← in the App Router, every component is a Server Component by default
 import { API_BASE_URL } from "@/lib/config"; // ← named import from the file you created; "@/" = project root // ← "@/" alias = project root (set up by create-next-app in jsconfig.json)
+import PostList from "@/components/PostList";
 
 const POSTS_URL = `${API_BASE_URL}/posts?_limit=12`; // ← template literal: the env value is spliced in, so the host is no longer hardcoded// ← constant: no magic strings inside functions
 
