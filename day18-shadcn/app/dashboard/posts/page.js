@@ -1,13 +1,21 @@
 // NO "use client" at top  ← in the App Router, every component is a Server Component by default
-import { API_BASE_URL } from "@/lib/config"; // ← named import from the file you created; "@/" = project root // ← "@/" alias = project root (set up by create-next-app in jsconfig.json)
+import { API_BASE_URL } from "@/lib/config"; // ← named import from lib/config.js; "@/" alias = project root (set up by create-next-app in jsconfig.json)
 import PostList from "@/components/PostList";
 
-const POSTS_URL = `${API_BASE_URL}/posts?_limit=12`; // ← template literal: the env value is spliced in, so the host is no longer hardcoded// ← constant: no magic strings inside functions
+// ← Day 26: Metadata API. Only works here because this file is a Server Component.
+//   Final tab title becomes "Posts | SaaS Dashboard" via the template in layout.js
+export const metadata = {
+  title: "Posts",
+  description: "Browse all posts fetched on the server.",
+};
+
+// ← template literal: the env value is spliced in, so the host is not hardcoded
+const POSTS_URL = `${API_BASE_URL}/posts?_limit=12`;
 
 async function getPosts() { // ← async function: allowed because this code runs on the server
   console.log("SERVER: fetching posts"); // ← shows in your TERMINAL, not the browser console (proves where it runs)
 
-  const res = await fetch(POSTS_URL, { cache: "no-store" }); // ← Next.js-extended fetch; no-store = always fresh (Day 24 covers caching)
+  const res = await fetch(POSTS_URL, { cache: "no-store" }); // ← Next.js-extended fetch; no-store = always fresh (Day 24)
 
   if (!res.ok) { // ← fetch does NOT throw on 404/500, so check manually (same as Day 7/14)
     throw new Error(`Failed to fetch posts: ${res.status}`); // ← throw → caught by your Day 22 error.js
