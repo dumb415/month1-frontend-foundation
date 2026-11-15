@@ -8,7 +8,7 @@ Part of a 6-month Fullstack AI Freelancer roadmap.
 **Live:** https://saas-dashboard-woad-pi.vercel.app
 **Code:** [day18-shadcn](./day18-shadcn)
 
-![SaaS Dashboard screenshot](./screenshots/dashboard.png)
+![SaaS Dashboard screenshot](./Screenshots/Dashboard.PNG)
 <!-- ![alt text](path) embeds an image; ./ means "relative to this file" -->
 
 **Stack:** Next.js (App Router), Tailwind v4, shadcn/ui, Recharts, Vercel
