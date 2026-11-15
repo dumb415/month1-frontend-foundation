@@ -1,2 +1,10 @@
 settings.json
 node_modules/
+
+.env*
+!.env.example
+.next/
+.vercel/
+dist/
+.DS_Store
+Thumbs.db

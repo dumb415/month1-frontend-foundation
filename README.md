@@ -1,27 +1,33 @@
-# Month 1 — Frontend Foundation
+# Month 1: Frontend Foundation
 
-28-day frontend foundation sprint: HTML, CSS, JavaScript, React, Tailwind, shadcn/ui, Next.js — deployed on Vercel and GitHub Pages.
+A 28-day frontend sprint: HTML, CSS, JavaScript, React, Tailwind, shadcn/ui, Next.js, Vercel.
+Part of a 6-month Fullstack AI Freelancer roadmap.
 
-Part of a 6-month Fullstack AI Freelancer roadmap (Frontend → Backend/AI → RAG → Payments → Agents → Portfolio/Freelancing).
+## Featured project: SaaS Dashboard
 
-## Tech stack
-- HTML5 / CSS3
-- Vanilla JavaScript (ES6+)
-- Fetch API / async-await
-- (React, Tailwind, Next.js join later in the month)
+**Live:** https://saas-dashboard-woad-pi.vercel.app
+**Code:** [day18-shadcn](./day18-shadcn)
 
-## Day-by-day log
+![SaaS Dashboard screenshot](./screenshots/dashboard.png)
+<!-- ![alt text](path) embeds an image; ./ means "relative to this file" -->
 
-| Day | Topic | Link |
-|---|---|---|
-| Day 7 | ES6+ & Fetch API — destructuring, spread/rest, map/filter/reduce, async/await, fetch from a public API, render to DOM | [day7-fetch-api/](./day7-fetch-api/index.html) |
+**Stack:** Next.js (App Router), Tailwind v4, shadcn/ui, Recharts, Vercel
 
-> Earlier days (1–6: HTML, CSS box model, Flexbox, Grid, responsive design, JS + DOM events) will be backfilled here as their files are added.
+## All projects
 
-## Live demo
-Once GitHub Pages is enabled on this repo (Settings → Pages → Deploy from branch → main → root), each day is reachable at:
+| Folder | Topic |
+|---|---|
+| [day1-html/my-app](./day1-html/my-app) | React app (includes a theme toggle component) |
+| [m1-day4-grid](./m1-day4-grid) | CSS Grid layout |
+| [day5-css](./day5-css) | CSS |
+| [day6-js-dom](./day6-js-dom) | JavaScript and DOM events |
+| [day7-fetch-api](./day7-fetch-api) | ES6+ and Fetch API (async/await) |
+| [day18-shadcn](./day18-shadcn) | Next.js SaaS dashboard (deployed) |
 
-`https://<your-username>.github.io/month1-frontend-foundation/day7-fetch-api/`
+## Run the featured project locally
 
-## Week milestone
-Static landing page deployed on GitHub Pages, built with Flexbox/Grid and async JS calling a live public API.
+```bash
+cd day18-shadcn
+npm install      # installs dependencies listed in package.json
+npm run dev      # starts the dev server on localhost:3000
+```
